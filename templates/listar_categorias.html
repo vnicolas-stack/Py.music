@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Categorias — Py.Music</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="layout-app">
+
+
+  <aside class="barra-lateral">
+    <a href="{{ url_for('nome_musica') }}" class="barra-lateral-logo">
+      <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="16" cy="16" r="16" fill="#732571"/>
+        <path d="M9 11c3.5-1.5 9.5-1.5 14 0M8 16c4-1.8 12-1.8 16 0M10 21c3-1.3 9-1.3 12 0" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <span>Py<span class="ponto">.</span>Music</span>
+    </a>
+
+    <div class="barra-lateral-secao">
+      <div class="barra-lateral-secao-label">Menu</div>
+      <a href="{{ url_for('nome_musica') }}" class="link-nav">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        Início
+      </a>
+      <a href="{{ url_for('listar') }}" class="link-nav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        Músicas
+      </a>
+      <a href="{{ url_for('gerenciar_categorias') }}" class="link-nav active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Categorias
+      </a>
+    </div>
+
+    <div class="barra-lateral-secao">
+      <div class="barra-lateral-secao-label">Biblioteca</div>
+    </div>
+  </aside>
+
+
+  <main class="conteudo-principal">
+    <div class="barra-topo">
+      <div class="barra-topo-nav">
+        <button class="barra-topo-btn" onclick="history.back()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="barra-topo-btn" onclick="history.forward()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+
+  
+    <div class="cabecalho-pagina">
+      <div class="cabecalho-icone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </div>
+      <div class="cabecalho-info">
+        <div class="cabecalho-label">Gerenciar</div>
+        <div class="cabecalho-titulo">Categorias</div>
+        <div class="cabecalho-meta">{{ categoria | length if categoria else 0 }} categorias criadas</div>
+      </div>
+    </div>
+
+    <div class="painel-adicionar">
+      <div class="painel-adicionar-titulo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        Criar nova categoria
+      </div>
+      <form method="POST" action="/adicionar_categoria">
+        <div class="formulario-grid" style="grid-template-columns: 1fr auto; align-items: end; gap: 12px;">
+          <div class="formulario-grupo">
+            <label class="formulario-label">Nome da categoria</label>
+            <input class="formulario-input" name="nome_categoria" placeholder="Ex: Rock, Pop, Hip-hop..." required>
+          </div>
+          <button class="btn-primario" type="submit" style="height: 44px; white-space: nowrap;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            Criar Categoria
+          </button>
+        </div>
+      </form>
+    </div>
+
+
+    <div class="titulo-secao">
+      <span>Todas as categorias</span>
+    </div>
+
+    {% if categoria %}
+    <div class="categoria-grid">
+      {% for c in categoria %}
+      <div class="categoria-card">
+        <div class="categoria-nome">{{ c.name }}</div>
+        <a href="{{ url_for('deletar_categoria', id=loop.index0) }}" class="categoria-btn-excluir"
+           onclick="return confirm('Excluir categoria {{ c.name }}?')">
+          Excluir
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="estado-vazio">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <h3>Nenhuma categoria ainda</h3>
+      <p>Crie sua primeira categoria usando o formulário acima!</p>
+    </div>
+    {% endif %}
+  </main>
+</div>
+</body>
+</html>
