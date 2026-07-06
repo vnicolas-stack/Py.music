@@ -1,0 +1,93 @@
+[
+    {
+        "id": "0012c06c-95c6-4506-94df-ef65a17a582f",
+        "title": "The Blonde",
+        "artista": "TV Girl",
+        "streams": "250000000",
+        "categoria": ""
+    },
+    {
+        "id": "d6bd27cc-67cb-483a-8452-bbabcf0507ec",
+        "title": "Reflections",
+        "artista": "The Neighbourhood",
+        "streams": "1500000",
+        "categoria": ""
+    },
+    {
+        "id": "662cb90a-4280-4110-8ba5-119a07baf981",
+        "title": "Sweater weather",
+        "artista": "The Neighbourhood",
+        "streams": "4700000",
+        "categoria": ""
+    },
+    {
+        "id": "7075fd0f-9cbd-44fc-a85b-c9c5163de9b3",
+        "title": "Love me not",
+        "artista": "Ravyn Lenae",
+        "streams": "1000000",
+        "categoria": "Pop Alternativo"
+    },
+    {
+        "id": "7475de22-5f86-421a-aa76-46d63a57e24b",
+        "title": "Hotel",
+        "artista": "Toby Fox",
+        "streams": "30000000",
+        "categoria": "Soundtrack"
+    },
+    {
+        "id": "a7909bf0-b8cc-4e05-bc4f-ebaa6c9a153c",
+        "title": "Do i wanna know?",
+        "artista": "Macacos Árticos",
+        "streams": "500000000",
+        "categoria": "Indie Rock"
+    },
+    {
+        "id": "2287769e-2af5-4b02-b2c6-95b7ea857ed1",
+        "title": "Smell Like Teen Spirit",
+        "artista": "Nirvana",
+        "streams": "1698000000",
+        "categoria": "Rock"
+    },
+    {
+        "id": "710e4f88-3c84-4818-8682-4a4fbb285d3c",
+        "title": "Samurai",
+        "artista": "Djavan",
+        "streams": "50000000",
+        "categoria": ""
+    },
+    {
+        "id": "dd29eefd-bf82-4b91-8a44-41846e211a68",
+        "title": "Pega Rapaz",
+        "artista": "Rita Lee",
+        "streams": "234120231",
+        "categoria": ""
+    },
+    {
+        "id": "fcf112a6-3f8d-41e1-98b8-97893d3da40d",
+        "title": "Starboy",
+        "artista": "The Weekend",
+        "streams": "904349230",
+        "categoria": "Pop"
+    },
+    {
+        "id": "33ceadb3-c14b-48d6-ab89-5434608e9a39",
+        "title": "Mice on Venus",
+        "artista": "C418",
+        "streams": "478002312",
+        "categoria": "Soundtrack"
+    },
+    {
+        "id": "085dc1c1-1032-4383-bcf2-a969fc50a306",
+        "title": "Mistery Girl",
+        "artista": "Housecall",
+        "streams": "200323923",
+        "categoria": ""
+    },
+    {
+        "id": "7b25d304-cea3-4bc8-837c-1c011f21f2f0",
+        "title": "Like the movies",
+        "artista": "Laufey",
+        "streams": "11111111111111",
+        "categoria": ""
+    }
+]
