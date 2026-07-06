@@ -111,20 +111,20 @@ def adicionar_categoria():
     salvar_json(ARQUIVO_CATEGORIA, categoria)
     return render_template("listar_categorias.html", musica=musica, categoria=categoria)
 
-@app.route('/deletar_categoria/<nome_categoria>') 
+@app.route("/deletar_categoria/<nome_categoria>") 
 def deletar_categoria(nome_categoria):
     global categoria, musica
 
-    categoria = [c for c in categoria if c.get('name') != nome_categoria]
+    categoria = [c for c in categoria if c.get("name") != nome_categoria]
     salvar_json(ARQUIVO_CATEGORIA, categoria)
 
     for m in musica:
-        if m.get('categoria') == nome_categoria:
-            m['categoria'] = ""
+        if m.get("categoria") == nome_categoria:
+            m["categoria"] = ""
 
     salvar_json(ARQUIVO_MUSICA, musica)
 
-    return redirect(url_for('gerenciar_categorias'))
+    return redirect(url_for("gerenciar_categorias"))
 
 if __name__ == "__main__":
     app.run(debug=True)
