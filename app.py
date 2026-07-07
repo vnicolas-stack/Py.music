@@ -1,10 +1,18 @@
 from flask import Flask, render_template, request, redirect, url_for
+import psycopg2 
+from psycopg2.extras import RealDictCursor
 import uuid
 import json
 import os
 
 app = Flask(__name__)
-
+def conectar():
+    return psycopg2.connect(
+        host = "localhost",
+        database = "Py.music",
+        user = "postgres",
+        password = "postgres"
+        )
 
 @app.template_filter('formatar_numero')
 def formatar_numero(valor):
