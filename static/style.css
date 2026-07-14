@@ -32,14 +32,92 @@ html, body {
   overflow-x: hidden;
 }
 
+/* ── FUNDO ANIMADO (feixes de luz) ── */
+.fundo-animado {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--c5);
+}
+
+.fundo-animado .feixe {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.55;
+  will-change: transform;
+}
+
+.fundo-animado .feixe-1 {
+  width: 55vw;
+  height: 55vw;
+  top: -15%;
+  left: -10%;
+  background: radial-gradient(circle, var(--accent) 0%, var(--c1) 55%, transparent 75%);
+  animation: flutuar-1 10s ease-in-out infinite;
+}
+
+.fundo-animado .feixe-2 {
+  width: 45vw;
+  height: 45vw;
+  bottom: -10%;
+  right: -8%;
+  background: radial-gradient(circle, var(--c1) 0%, var(--c3) 55%, transparent 75%);
+  animation: flutuar-2 12s ease-in-out infinite;
+}
+
+.fundo-animado .feixe-3 {
+  width: 38vw;
+  height: 38vw;
+  top: 35%;
+  left: 40%;
+  background: radial-gradient(circle, var(--accent2) 0%, var(--c2) 55%, transparent 75%);
+  opacity: 0.35;
+  animation: flutuar-3 14s ease-in-out infinite;
+}
+
+.fundo-animado .grao {
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@keyframes flutuar-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(6vw, 8vh) scale(1.1); }
+  66%      { transform: translate(-4vw, 5vh) scale(0.95); }
+}
+
+@keyframes flutuar-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40%      { transform: translate(-7vw, -6vh) scale(1.08); }
+  70%      { transform: translate(4vw, -3vh) scale(0.92); }
+}
+
+@keyframes flutuar-3 {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50%      { transform: translate(-45%, -55%) scale(1.15); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fundo-animado .feixe { animation: none; }
+}
+
 .layout-app {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: var(--barra-lateral-width) 1fr;
   height: 100vh;
 }
 
 .barra-lateral {
-  background: var(--c5);
+  background: rgba(29, 0, 22, 0.55);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   padding: 24px 12px;
   display: flex;
   flex-direction: column;
@@ -115,7 +193,7 @@ html, body {
 .link-nav.active svg { opacity: 1; }
 
 .conteudo-principal {
-  background: linear-gradient(180deg, var(--c3) 0%, var(--c4) 40%, var(--c5) 100%);
+  background: linear-gradient(180deg, rgba(72,18,68,0.55) 0%, rgba(50,9,45,0.65) 40%, rgba(29,0,22,0.85) 100%);
   overflow-y: auto;
   padding: 24px 32px 40px;
 }

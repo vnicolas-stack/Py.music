@@ -7,6 +7,12 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+<div class="fundo-animado">
+  <div class="feixe feixe-1"></div>
+  <div class="feixe feixe-2"></div>
+  <div class="feixe feixe-3"></div>
+  <div class="grao"></div>
+</div>
 <div class="layout-app">
 
 
@@ -81,11 +87,11 @@
         <div class="formulario-grid">
           <div class="formulario-grupo">
             <label class="formulario-label">Título da música</label>
-            <input class="formulario-input" name="nome_musica" placeholder="Título" value="{{ musica.title }}" required>
+            <input class="formulario-input" name="nome_musica" placeholder="Título" value="{{ musica.title }}" pattern=".*\S.*" title="Não pode ser só espaços" required>
           </div>
           <div class="formulario-grupo">
             <label class="formulario-label">Artista</label>
-            <input class="formulario-input" name="nome_artista" placeholder="Artista" value="{{ musica.artista }}" required>
+            <input class="formulario-input" name="nome_artista" placeholder="Artista" value="{{ musica.artista }}" pattern=".*\S.*" title="Não pode ser só espaços" required>
           </div>
           <div class="formulario-grupo">
             <label class="formulario-label">Número de streams</label>
