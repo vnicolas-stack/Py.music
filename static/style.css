@@ -32,7 +32,6 @@ html, body {
   overflow-x: hidden;
 }
 
-/* ── FUNDO ANIMADO (feixes de luz) ── */
 .fundo-animado {
   position: fixed;
   inset: 0;
@@ -56,7 +55,7 @@ html, body {
   top: -15%;
   left: -10%;
   background: radial-gradient(circle, var(--accent) 0%, var(--c1) 55%, transparent 75%);
-  animation: flutuar-1 10s ease-in-out infinite;
+  animation: flutuar-1 2s ease-in-out infinite;
 }
 
 .fundo-animado .feixe-2 {
@@ -65,7 +64,7 @@ html, body {
   bottom: -10%;
   right: -8%;
   background: radial-gradient(circle, var(--c1) 0%, var(--c3) 55%, transparent 75%);
-  animation: flutuar-2 12s ease-in-out infinite;
+  animation: flutuar-2 4s ease-in-out infinite;
 }
 
 .fundo-animado .feixe-3 {
@@ -75,7 +74,7 @@ html, body {
   left: 40%;
   background: radial-gradient(circle, var(--accent2) 0%, var(--c2) 55%, transparent 75%);
   opacity: 0.35;
-  animation: flutuar-3 14s ease-in-out infinite;
+  animation: flutuar-3 6s ease-in-out infinite;
 }
 
 .fundo-animado .grao {
