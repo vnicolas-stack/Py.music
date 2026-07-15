@@ -391,12 +391,15 @@ html, body {
 .musica-info { display: flex; align-items: center; gap: 12px; }
 
 .musica-capa {
-  width: 40px; height: 40px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
   border-radius: 4px;
-  background: linear-gradient(135deg, var(--c2), var(--c1));
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
 }
+
 .musica-capa svg { width: 16px; height: 16px; color: rgba(255,255,255,0.6); }
 
 .musica-titulo { font-weight: 500; color: var(--text-primary); margin-bottom: 2px; }
@@ -610,3 +613,44 @@ html, body {
 .estatistica-valor { font-size: 15px; font-weight: 700; }
 .estatistica-label { font-size: 12px; color: var(--text-secondary); }
 
+
+/* ── NOVO BOTÃO DE UPLOAD PERSONALIZADO ── */
+.input-file-escondido {
+  display: none !important;
+}
+
+.campo-upload-container {
+  grid-column: span 4;
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-upload-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px dashed rgba(115, 37, 113, 0.4);
+  border-radius: var(--radius);
+  padding: 11px 14px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition);
+  font-size: 14px;
+}
+
+.custom-upload-btn:hover {
+  background: rgba(115, 37, 113, 0.15);
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+
+.custom-upload-btn svg {
+  color: var(--accent2);
+  flex-shrink: 0;
+  transition: color var(--transition);
+}
+
+.custom-upload-btn:hover svg {
+  color: var(--accent);
+}

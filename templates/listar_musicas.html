@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Músicas — Py.Music</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='thumbnail.png') }}">
 </head>
 <body>
 <div class="fundo-animado">
@@ -107,8 +108,8 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
         Adicionar nova música
       </div>
-      <form method="POST" action="/adicionar">
-        <div class="formulario-grid quatro-colunas">
+      <form method="POST" action="/adicionar" enctype="multipart/form-data">
+        <div class="formulario-grid quatro-colunas"> 
           <div class="formulario-grupo">
             <label class="formulario-label">Título</label>
             <input class="formulario-input" name="nome_musica" placeholder="Nome da música" pattern=".*\S.*" title="Não pode ser só espaços" required>
@@ -129,6 +130,10 @@
                 <option value="{{ c.name }}">{{ c.name }}</option>
               {% endfor %}
             </select>
+          </div>
+          
+          <div class="formulario-grupo" style="grid-column: span 4;"> <label class="formulario-label">Capa da música (Imagem)</label>
+            <input class="formulario-input" type="file" name="imagem" accept="image/*">
           </div>
         </div>
         <div class="formulario-acoes">
@@ -166,11 +171,16 @@
           <td>
             <div class="musica-info">
               <div class="musica-capa">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                {% if m.capa %}
+                  <img src="{{ url_for('static', filename='uploads/' + m.capa) }}" alt="Capa" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+                {% else %}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+                  </svg>
+                {% endif %}
               </div>
               <div>
                 <div class="musica-titulo">{{ m.title }}</div>
-                <div class="musica-artista">{{ m.artista }}</div>
               </div>
             </div>
           </td>

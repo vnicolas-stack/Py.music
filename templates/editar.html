@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Editar Música — Py.Music</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='thumbnail.png') }}">
 </head>
 <body>
 <div class="fundo-animado">
@@ -83,30 +84,34 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         Editar informações
       </div>
-      <form method="POST" action="/editar/{{ id }}">
-        <div class="formulario-grid">
+      <form method="POST" action="/adicionar" enctype="multipart/form-data">
+        <div class="formulario-grid quatro-colunas"> 
           <div class="formulario-grupo">
-            <label class="formulario-label">Título da música</label>
-            <input class="formulario-input" name="nome_musica" placeholder="Título" value="{{ musica.title }}" pattern=".*\S.*" title="Não pode ser só espaços" required>
+            <label class="formulario-label">Título</label>
+            <input class="formulario-input" name="nome_musica" placeholder="Nome da música" pattern=".*\S.*" title="Não pode ser só espaços" required>
           </div>
           <div class="formulario-grupo">
             <label class="formulario-label">Artista</label>
-            <input class="formulario-input" name="nome_artista" placeholder="Artista" value="{{ musica.artista }}" pattern=".*\S.*" title="Não pode ser só espaços" required>
+            <input class="formulario-input" name="nome_artista" placeholder="Nome do artista" pattern=".*\S.*" title="Não pode ser só espaços" required>
           </div>
           <div class="formulario-grupo">
-            <label class="formulario-label">Número de streams</label>
-            <input class="formulario-input" type="number" name="streams" placeholder="0" value="{{ musica.streams }}">
+            <label class="formulario-label">Streams</label>
+            <input class="formulario-input" type="number" name="streams" placeholder="0">
           </div>
           <div class="formulario-grupo">
             <label class="formulario-label">Categoria</label>
             <select class="formulario-select" name="categoria">
               <option value="">Selecionar...</option>
               {% for c in categoria %}
-                <option value="{{ c.name }}" {% if c.name == musica.categoria %}selected{% endif %}>{{ c.name }}</option>
+                <option value="{{ c.name }}">{{ c.name }}</option>
               {% endfor %}
             </select>
           </div>
+          <div class="formulario-grupo" style="grid-column: span 4;"> <label class="formulario-label">Capa da música (Imagem)</label>
+            <input class="formulario-input" type="file" name="imagem" accept="image/*">
+          </div>
         </div>
+
         <div class="formulario-acoes">
           <a href="{{ url_for('listar') }}" class="btn-contorno">Cancelar</a>
           <button class="btn-primario" type="submit">
