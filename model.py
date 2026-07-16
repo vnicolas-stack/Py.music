@@ -5,7 +5,7 @@ HOST = "127.0.0.1"
 PORT = "5432"
 DB_NAME = "Py.music"
 USER = "postgres"
-PASSWORD = "Nick7F"
+PASSWORD = "postgres"
 
 
 def get_conn():
