@@ -5,7 +5,7 @@ HOST = "127.0.0.1"
 PORT = "5432"
 DB_NAME = "Py.music"
 USER = "postgres"
-PASSWORD = "postgres"
+PASSWORD = "Nick7F"
 
 
 def get_conn():
@@ -120,10 +120,10 @@ def adicionar_musica(titulo, artista, streams, nome_categoria, capa=None):
         conn.commit()
 
 
-def editar_musica(id_musica, titulo, artista, streams, nome_categoria, capa=None):
+def editar_musica(id_musica, titulo, artista, streams, nome_categoria, capa=None, remover_capa=False):
     with get_conn() as conn, conn.cursor() as cur:
         id_categoria = _id_categoria_por_nome(cur, nome_categoria)
-        
+
         if capa:
             # Se o usuário enviou uma nova capa, atualizamos ela no banco
             cur.execute(
@@ -134,8 +134,18 @@ def editar_musica(id_musica, titulo, artista, streams, nome_categoria, capa=None
                 """,
                 (titulo, artista, streams or 0, id_categoria, capa, id_musica),
             )
+        elif remover_capa:
+            # Usuário pediu para remover a capa atual, sem enviar uma nova
+            cur.execute(
+                """
+                UPDATE public.musicas
+                SET titulo = %s, artista = %s, streams = %s, id_categoria = %s, capa = NULL
+                WHERE id = %s
+                """,
+                (titulo, artista, streams or 0, id_categoria, id_musica),
+            )
         else:
-            # Se NÃO enviou capa nova, atualizamos os dados mantendo a capa atual
+            # Se NÃO enviou capa nova nem pediu remoção, mantemos a capa atual
             cur.execute(
                 """
                 UPDATE public.musicas
@@ -145,6 +155,16 @@ def editar_musica(id_musica, titulo, artista, streams, nome_categoria, capa=None
                 (titulo, artista, streams or 0, id_categoria, id_musica),
             )
         conn.commit()
+
+
+def capa_em_uso_por_outras(nome_capa, excluir_id):
+    """Verifica se outra música (diferente de excluir_id) ainda usa essa mesma imagem."""
+    with get_conn() as conn, conn.cursor() as cur:
+        cur.execute(
+            "SELECT 1 FROM public.musicas WHERE capa = %s AND id != %s LIMIT 1",
+            (nome_capa, excluir_id),
+        )
+        return cur.fetchone() is not None
 
 
 def deletar_musica(id_musica):

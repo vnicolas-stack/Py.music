@@ -94,16 +94,39 @@ def editar(id):
     if request.method == "POST":
         titulo = texto_limpo(request.form.get("nome_musica")).strip()
         artista = texto_limpo(request.form.get("nome_artista")).strip()
+
         capa_da_musica = request.files.get("imagem")
+        nome_capa = None
+
+        if capa_da_musica and capa_da_musica.filename != '':
+            if arquivo_permitido(capa_da_musica.filename):
+                nome_capa = secure_filename(capa_da_musica.filename)
+                capa_da_musica.save(os.path.join(app.config['UPLOAD_FOLDER'], nome_capa))
+
+        remover_imagem = request.form.get("remover_imagem") == "on"
 
         if titulo and artista:
+            # Se o usuário pediu remoção e não enviou uma capa nova,
+            # tentamos apagar o arquivo antigo do disco (se não for usado por outra música)
+            if remover_imagem and not nome_capa:
+                musica_atual = model.obter_musica(id)
+                if musica_atual and musica_atual.get('capa'):
+                    if not model.capa_em_uso_por_outras(musica_atual['capa'], id):
+                        caminho_antigo = os.path.join(app.config['UPLOAD_FOLDER'], musica_atual['capa'])
+                        if os.path.exists(caminho_antigo):
+                            try:
+                                os.remove(caminho_antigo)
+                            except OSError:
+                                pass
+
             model.editar_musica(
                 id_musica=id,
                 titulo=titulo,
                 artista=artista,
                 streams=request.form.get("streams"),
                 nome_categoria=texto_limpo(request.form.get("categoria")),
-                capa_da_musica=capa_da_musica.read() if capa_da_musica else None
+                capa=nome_capa,
+                remover_capa=remover_imagem
             )
         return render_template("listar_musicas.html", musica=model.listar_musicas(), categoria=model.listar_categorias())
     else:

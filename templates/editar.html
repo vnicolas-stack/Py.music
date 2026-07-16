@@ -84,30 +84,45 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         Editar informações
       </div>
-      <form method="POST" action="/adicionar" enctype="multipart/form-data">
+      <form method="POST" action="/editar/{{ musica.id }}" enctype="multipart/form-data">
         <div class="formulario-grid quatro-colunas"> 
           <div class="formulario-grupo">
             <label class="formulario-label">Título</label>
-            <input class="formulario-input" name="nome_musica" placeholder="Nome da música" pattern=".*\S.*" title="Não pode ser só espaços" required>
+            <input class="formulario-input" name="nome_musica" value="{{ musica.title }}" placeholder="Nome da música" ...>
           </div>
           <div class="formulario-grupo">
             <label class="formulario-label">Artista</label>
-            <input class="formulario-input" name="nome_artista" placeholder="Nome do artista" pattern=".*\S.*" title="Não pode ser só espaços" required>
+            <input class="formulario-input" name="nome_artista" value="{{ musica.artista }}" placeholder="Nome do artista" ...>
           </div>
           <div class="formulario-grupo">
             <label class="formulario-label">Streams</label>
-            <input class="formulario-input" type="number" name="streams" placeholder="0">
+            <input class="formulario-input" type="number" name="streams" value="{{ musica.streams }}" placeholder="0">
           </div>
           <div class="formulario-grupo">
             <label class="formulario-label">Categoria</label>
             <select class="formulario-select" name="categoria">
               <option value="">Selecionar...</option>
               {% for c in categoria %}
-                <option value="{{ c.name }}">{{ c.name }}</option>
+                <option value="{{ c.name }}" {% if c.name == musica.categoria %}selected{% endif %}>{{ c.name }}</option>
               {% endfor %}
             </select>
           </div>
           <div class="formulario-grupo" style="grid-column: span 4;"> <label class="formulario-label">Capa da música (Imagem)</label>
+
+            {% if musica.capa %}
+            <div class="capa-atual-preview">
+              <img src="{{ url_for('static', filename='uploads/' + musica.capa) }}" alt="Capa atual" class="capa-atual-img">
+              <div class="capa-atual-info">
+                <span class="capa-atual-texto">Imagem atual</span>
+                <label class="btn-remover-imagem" id="label-remover-imagem">
+                  <input type="checkbox" name="remover_imagem" id="remover_imagem" style="display:none;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                  <span id="texto-remover-imagem">Remover imagem</span>
+                </label>
+              </div>
+            </div>
+            {% endif %}
+
             <input class="formulario-input" type="file" name="imagem" accept="image/*">
           </div>
         </div>
@@ -121,6 +136,20 @@
         </div>
       </form>
     </div>
+
+    <script>
+      (function () {
+        var checkbox = document.getElementById('remover_imagem');
+        var label = document.getElementById('label-remover-imagem');
+        var texto = document.getElementById('texto-remover-imagem');
+        if (checkbox && label && texto) {
+          checkbox.addEventListener('change', function () {
+            label.classList.toggle('ativo', checkbox.checked);
+            texto.textContent = checkbox.checked ? 'Imagem será removida' : 'Remover imagem';
+          });
+        }
+      })();
+    </script>
     {% else %}
     <div class="estado-vazio">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
