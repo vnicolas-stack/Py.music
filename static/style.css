@@ -749,3 +749,23 @@ input[type="file"].formulario-input::-webkit-file-upload-button {
 .custom-upload-btn:hover svg {
   color: var(--accent);
 }
+
+.alerta {
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  font-size: 14px;
+  border: 1px solid transparent;
+}
+
+.alerta-erro {
+  background: rgba(220, 53, 69, 0.12);
+  border-color: rgba(220, 53, 69, 0.4);
+  color: #ff8a95;
+}
+
+.alerta-sucesso {
+  background: rgba(40, 167, 69, 0.12);
+  border-color: rgba(40, 167, 69, 0.4);
+  color: #7ee0a1;
+}

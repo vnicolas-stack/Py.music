@@ -40,10 +40,29 @@ def adicionar_categoria(nome):
         conn.commit()
 
 
+def categoria_tem_musicas(nome):
+    with get_conn() as conn, conn.cursor() as cur:
+        cur.execute(
+            """
+            SELECT 1
+            FROM public.musicas m
+            JOIN public.categorias c ON c.id = m.id_categoria
+            WHERE c.titulo = %s
+            LIMIT 1
+            """,
+            (nome,),
+        )
+        return cur.fetchone() is not None
+
+
 def deletar_categoria(nome):
+    if categoria_tem_musicas(nome):
+        return False
+
     with get_conn() as conn, conn.cursor() as cur:
         cur.execute("DELETE FROM public.categorias WHERE titulo = %s", (nome,))
         conn.commit()
+    return True
 
 
 def _id_categoria_por_nome(cur, nome_categoria):
@@ -125,7 +144,7 @@ def editar_musica(id_musica, titulo, artista, streams, nome_categoria, capa=None
         id_categoria = _id_categoria_por_nome(cur, nome_categoria)
 
         if capa:
-            # Se o usuário enviou uma nova capa, atualizamos ela no banco
+            
             cur.execute(
                 """
                 UPDATE public.musicas
@@ -135,7 +154,7 @@ def editar_musica(id_musica, titulo, artista, streams, nome_categoria, capa=None
                 (titulo, artista, streams or 0, id_categoria, capa, id_musica),
             )
         elif remover_capa:
-            # Usuário pediu para remover a capa atual, sem enviar uma nova
+       
             cur.execute(
                 """
                 UPDATE public.musicas
@@ -145,7 +164,7 @@ def editar_musica(id_musica, titulo, artista, streams, nome_categoria, capa=None
                 (titulo, artista, streams or 0, id_categoria, id_musica),
             )
         else:
-            # Se NÃO enviou capa nova nem pediu remoção, mantemos a capa atual
+         
             cur.execute(
                 """
                 UPDATE public.musicas

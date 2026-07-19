@@ -1,9 +1,10 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from werkzeug.utils import secure_filename
 import model
 
 app = Flask(__name__)
+app.secret_key = "postgres"
 
 UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp', 'gif'}
@@ -106,8 +107,6 @@ def editar(id):
         remover_imagem = request.form.get("remover_imagem") == "on"
 
         if titulo and artista:
-            # Se o usuário pediu remoção e não enviou uma capa nova,
-            # tentamos apagar o arquivo antigo do disco (se não for usado por outra música)
             if remover_imagem and not nome_capa:
                 musica_atual = model.obter_musica(id)
                 if musica_atual and musica_atual.get('capa'):
@@ -149,7 +148,11 @@ def adicionar_categoria():
 
 @app.route("/deletar_categoria/<nome_categoria>")
 def deletar_categoria(nome_categoria):
-    model.deletar_categoria(nome_categoria)
+    excluiu = model.deletar_categoria(nome_categoria)
+    if not excluiu:
+        flash(f"Não é possível excluir a categoria '{nome_categoria}' pois há músicas vinculadas a ela.", "erro")
+    else:
+        flash(f"Categoria '{nome_categoria}' excluída com sucesso.", "sucesso")
     return redirect(url_for("gerenciar_categorias"))
 
 

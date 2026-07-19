@@ -75,7 +75,16 @@
         <div class="cabecalho-meta">{{ categoria | length if categoria else 0 }} categorias criadas</div>
       </div>
     </div>
+  
+    {% with mensagens = get_flashed_messages(with_categories=true) %}
+       {% if mensagens %}
+          {% for categoria_msg, texto in mensagens %}
+           <div class="alerta alerta-{{ categoria_msg }}">{{ texto }}</div>
+          {% endfor %}
+      {% endif %}
+    {% endwith %}
 
+  
     <div class="painel-adicionar">
       <div class="painel-adicionar-titulo">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
