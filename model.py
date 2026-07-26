@@ -71,17 +71,18 @@ def listar_musicas():
 
 
 def buscar_musicas(termo):
-    """Busca por título ou artista (case-insensitive)."""
+    """Busca por título, artista ou categoria (case-insensitive, parcial)."""
     with get_conn() as conn, conn.cursor() as cur:
         cur.execute(
             _SELECT_MUSICA + """
-            WHERE LOWER(m.titulo) LIKE %s OR LOWER(m.artista) LIKE %s
+            WHERE LOWER(m.titulo) LIKE %s
+               OR LOWER(m.artista) LIKE %s
+               OR LOWER(c.titulo) LIKE %s
             ORDER BY m.id
             """,
-            (f"%{termo}%", f"%{termo}%"),
+            (f"%{termo}%", f"%{termo}%", f"%{termo}%"),
         )
         return cur.fetchall()
-
 
 def buscar_musicas_por_categoria(nome_categoria):
     with get_conn() as conn, conn.cursor() as cur:
