@@ -33,19 +33,20 @@ def formatar_numero(valor):
 @app.route("/buscar", methods=["GET"])
 def buscar():
     termo = request.args.get("nome_musica", "").strip().lower()
-    categoria_filtro = request.args.get("categoria_filtro", "").strip()
     categoria = model.listar_categorias()
-
-    if categoria_filtro:
-        resultado = model.buscar_musicas_por_categoria(categoria_filtro)
-        mensagem = None if resultado else f"Nenhuma música encontrada na categoria '{categoria_filtro}'."
-        return render_template("listar_musicas.html", musica=resultado, categoria=categoria, mensagem=mensagem, categoria_selecionada=categoria_filtro)
 
     if not termo:
         return render_template("listar_musicas.html", musica=model.listar_musicas(), categoria=categoria)
 
-    resultado = model.buscar_musicas(termo)
-    mensagem = None if resultado else "Nenhuma música encontrada para sua busca."
+    categoria_encontrada = model.buscar_categoria_por_nome(termo)
+
+    if categoria_encontrada:
+        resultado = model.buscar_musicas_por_categoria(termo)
+        mensagem = None if resultado else f"Nenhuma música encontrada na categoria '{categoria_encontrada['name']}'."
+    else:
+        resultado = model.buscar_musicas(termo)
+        mensagem = None if resultado else "Nenhuma música encontrada para sua busca."
+
     return render_template("listar_musicas.html", musica=resultado, categoria=categoria, mensagem=mensagem)
 
 

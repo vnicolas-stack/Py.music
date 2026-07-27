@@ -57,7 +57,7 @@ def _id_categoria_por_nome(cur, nome_categoria):
 #                    MÚSICAS 
 
 _SELECT_MUSICA = """
-    SELECT m.id, m.titulo AS title, m.artista, m.streams,
+    SELECT m.id, m.titulo AS title, m.artista, m.streams, m.capa,
            COALESCE(c.titulo, '') AS categoria
     FROM public.musicas m
     LEFT JOIN public.categorias c ON c.id = m.id_categoria
@@ -108,34 +108,51 @@ def obter_musica(id_musica):
         return cur.fetchone()
 
 
-def adicionar_musica(titulo, artista, streams, nome_categoria):
+def adicionar_musica(titulo, artista, streams, nome_categoria, capa):
     with get_conn() as conn, conn.cursor() as cur:
         id_categoria = _id_categoria_por_nome(cur, nome_categoria)
         cur.execute(
             """
-            INSERT INTO public.musicas (titulo, artista, streams, id_categoria)
+            INSERT INTO public.musicas (titulo, artista, streams, id_categoria, capa)
             VALUES (%s, %s, %s, %s)
             """,
-            (titulo, artista, streams or 0, id_categoria),
+            (titulo, artista, streams or 0, id_categoria, capa),
         )
         conn.commit()
 
+def capa_em_uso_por_outras(capa, id_musica):
+    """Verifica se outra música (diferente de id_musica) está usando a mesma capa."""
+    with get_conn() as conn, conn.cursor() as cur:
+        cur.execute(
+            "SELECT 1 FROM public.musicas WHERE capa = %s AND id != %s",
+            (capa, id_musica),
+        )
+        return cur.fetchone() is not None
 
-def editar_musica(id_musica, titulo, artista, streams, nome_categoria):
+def editar_musica(id_musica, titulo, artista, streams, nome_categoria, capa=None, remover_capa=False):
     with get_conn() as conn, conn.cursor() as cur:
         id_categoria = _id_categoria_por_nome(cur, nome_categoria)
+
+        if capa:
+            nova_capa = capa
+        elif remover_capa:
+            nova_capa = None
+        else:
+            cur.execute("SELECT capa FROM public.musicas WHERE id = %s", (id_musica,))
+            row = cur.fetchone()
+            nova_capa = row["capa"] if row else None
+
         cur.execute(
             """
             UPDATE public.musicas
-            SET titulo = %s, artista = %s, streams = %s, id_categoria = %s
+            SET titulo = %s, artista = %s, streams = %s, id_categoria = %s, capa = %s
             WHERE id = %s
             """,
-            (titulo, artista, streams or 0, id_categoria, id_musica),
+            (titulo, artista, streams or 0, id_categoria, nova_capa, id_musica),
         )
         conn.commit()
 
-
 def deletar_musica(id_musica):
     with get_conn() as conn, conn.cursor() as cur:
-        cur.execute("DELETE FROM musica WHERE id = %s", (id_musica,))
+        cur.execute("DELETE FROM public.musicas WHERE id = %s", (id_musica,))
         conn.commit()
