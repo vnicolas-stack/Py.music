@@ -114,7 +114,7 @@ def adicionar_musica(titulo, artista, streams, nome_categoria, capa):
         cur.execute(
             """
             INSERT INTO public.musicas (titulo, artista, streams, id_categoria, capa)
-            VALUES (%s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s)
             """,
             (titulo, artista, streams or 0, id_categoria, capa),
         )
